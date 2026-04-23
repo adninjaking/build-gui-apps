@@ -26,7 +26,8 @@ def speak(word):
     myobj = gTTS(text=word, lang=language, slow=False, tld="co.uk")
     myobj.save(filename)
 
-    os.system(f'"{filename}"')
+    os.startfile(filename)
+    time.sleep(2)
 
     try:
         os.remove(filename)
