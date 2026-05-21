@@ -1,60 +1,55 @@
 
-from tkinter import *
+import tkinter as tk
 from gtts import gTTS
+from playsound import playsound
 import os
 
 
-window = Tk()
-window.title("Slow Mo Voice")
-window.geometry("650x550+350+200")
 
 
-frame1 = Frame(window, bg="light pink", height=150)
-frame1.pack(fill=X)
+def speak(text, lang):
+    filename = "voice.mp3"
 
-frame2 = Frame(window, bg="light green", height=750)
-frame2.pack(fill=X)
+    tts = gTTS(text=text, lang=lang)
+    tts.save(filename)
 
-label = Label(
-    frame1,
-    text="Slow Motion Speaker",
-    font="bold,30",
-    bg="light pink"
-)
-label.place(x=170, y=70)
+    playsound(filename)
+
+    os.remove(filename) 
 
 
-entry = Entry(frame2, width=45, bd=4, font=14)
-entry.place(x=50, y=52)
+def speak_yes():
+    speak("Sí", "es")   
+
+def speak_no():
+    speak("Non", "fr")  
+
+def speak_hello():
+    speak("Hallo", "de")  
+
+def speak_bye():
+    speak("さようなら", "ja")  
 
 
-def play():
-    text = entry.get()
-    if text.strip() == "":
-        return
+root = tk.Tk()
+root.title("Soundboard")
+root.geometry("300x250")
 
-    language = "en"
-    myobj = gTTS(
-        text=text,
-        lang=language,
-        slow=True,      
-        tld="co.uk"
-    )
-
-    filename = "slow_voice.mp3"
-    myobj.save(filename)
-    os.startfile(filename) 
+for i in range(2):
+    root.grid_rowconfigure(i, weight=1)
+    root.grid_columnconfigure(i, weight=1)
 
 
-btn = Button(
-    frame2,
-    text="Speak Slowly",
-    width=15,
-    pady=10,
-    font="bold,15",
-    command=play,
-    bg="yellow"
-)
-btn.place(x=250, y=130)
+btn1 = tk.Button(root, text="YES", font=("Arial", 16), command=speak_yes)
+btn2 = tk.Button(root, text="NO", font=("Arial", 16), command=speak_no)
+btn3 = tk.Button(root, text="HELLO", font=("Arial", 16), command=speak_hello)
+btn4 = tk.Button(root, text="BYE", font=("Arial", 16), command=speak_bye)
 
-window.mainloop()
+btn1.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+btn2.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
+btn3.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
+btn4.grid(row=1, column=1, padx=10, pady=10, sticky="nsew")
+
+
+root.mainloop()
+
